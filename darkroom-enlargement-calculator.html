@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exposure Time Calculator by Enlargement Size</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      max-width: 420px;
+      width: 100%;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px;
+      width: 100%;
+      font-size: 1.1em;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.2em;
+      text-align: center;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Exposure Time Calculator<br>by Enlargement Size</h2>
+
+    <label for="oldTime">Old Exposure Time (seconds):</label>
+    <input type="number" id="oldTime" step="0.1" placeholder="e.g. 10" />
+
+    <label for="oldWidth">Old Print Width (inches):</label>
+    <input type="number" id="oldWidth" step="0.1" placeholder="e.g. 5" />
+
+    <label for="oldHeight">Old Print Height (inches):</label>
+    <input type="number" id="oldHeight" step="0.1" placeholder="e.g. 7" />
+
+    <label for="newWidth">New Print Width (inches):</label>
+    <input type="number" id="newWidth" step="0.1" placeholder="e.g. 8" />
+
+    <label for="newHeight">New Print Height (inches):</label>
+    <input type="number" id="newHeight" step="0.1" placeholder="e.g. 10" />
+
+    <button id="calculateBtn">Calculate New Exposure Time</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+      const oldTime = parseFloat(document.getElementById("oldTime").value);
+      const oldWidth = parseFloat(document.getElementById("oldWidth").value);
+      const oldHeight = parseFloat(document.getElementById("oldHeight").value);
+      const newWidth = parseFloat(document.getElementById("newWidth").value);
+      const newHeight = parseFloat(document.getElementById("newHeight").value);
+      const result = document.getElementById("result");
+
+      if (
+        isNaN(oldTime) || oldTime <= 0 ||
+        isNaN(oldWidth) || oldWidth <= 0 ||
+        isNaN(oldHeight) || oldHeight <= 0 ||
+        isNaN(newWidth) || newWidth <= 0 ||
+        isNaN(newHeight) || newHeight <= 0
+      ) {
+        result.textContent = "Please enter positive numbers for all fields.";
+        return;
+      }
+
+      // Use longest side of print sizes for ratio
+      const oldMax = Math.max(oldWidth, oldHeight);
+      const newMax = Math.max(newWidth, newHeight);
+
+      const ratio = newMax / oldMax;
+      const newTime = oldTime * ratio * ratio;
+
+      result.textContent = `New Exposure Time: ${newTime.toFixed(2)} seconds`;
+    });
+  </script>
+</body>
+</html>
